@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <form class="form">
+    <div class="form__group column">
+      <div class="form__group-field">
+        <label for="login">Логин</label>
+        <input type="text" autocomplete="off" placeholder="Логин" name="login">
+      </div>
+      <div class="form__group-field">
+        <label for="password">Пароль</label>
+        <input type="password" minlength="6" autocomplete="off" placeholder="Пароль" name="password">
+        <div class="alert">
+          <span  class="alert__error">
+            Неверный логин или пароль 
+          </span>
+        </div>
+      </div>
+    </div>
+    <button class="form__group-btn" >Регистрация</button>
+    <span class="info">У вас еще нет аккаутна? <a [routerLink]="['']">Зарегистрируйтесь!</a></span>
+  </form>
+</div>
