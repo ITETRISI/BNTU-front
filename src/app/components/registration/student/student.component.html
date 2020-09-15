@@ -70,21 +70,21 @@
     <div class="form__group">
       <div class="form__group-field">
         <label for="university">Университет</label>
-        <ng-select (change)="getFaculty($event)" formControlName="userUniversity" [clearable]="false"
+        <ng-select (change)="getStudyStep('faculty',$event)" formControlName="userUniversity" [clearable]="false"
           [items]="university" bindLabel="university_name" name="university" [searchable]="false"
           bindValue="university_id" placeholder="Университет"></ng-select>
       </div>
 
       <div class="form__group-field">
         <label for="institute">Факультет</label>
-        <ng-select (change)="getCathedra($event)" formControlName="userFaculty"  [clearable]="false"
+        <ng-select (change)="getStudyStep('cathedra',$event)" formControlName="userFaculty"  [clearable]="false"
           [items]="faculty" bindLabel="faculty_name" name="faculty" [searchable]="false"
           bindValue="faculty_id" placeholder="Факультет"></ng-select>
       </div>
 
       <div class="form__group-field">
         <label for="institute">Кафедра</label>
-        <ng-select (change)="getSpecialty($event)" formControlName="userCathedra"  [clearable]="false"
+        <ng-select (change)="getStudyStep('specialty',$event)" formControlName="userCathedra"  [clearable]="false"
           [items]="cathedra" name="cathedra" bindLabel="cathedra_name" [searchable]="false"
           bindValue="cathedra_id" placeholder="Кафедра">
         </ng-select>
@@ -94,7 +94,7 @@
     <div class="form__group">
       <div class="form__group-field">
         <label for="institute">Специальность</label>
-        <ng-select (change)="getGroup($event)"  formControlName="userSpecialty"  [clearable]="false"
+        <ng-select (change)="getStudyStep('group',$event)"  formControlName="userSpecialty"  [clearable]="false"
           [items]="specialty" name="specialty" bindLabel="specialty_name"
           [searchable]="false" bindValue="specialty_id" placeholder="Специальность">
         </ng-select>

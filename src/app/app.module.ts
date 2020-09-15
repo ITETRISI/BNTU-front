@@ -10,7 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { StudentComponent } from './components/registration/student/student.component';
-import { SelectStudyComponent } from './components/registration/student/select-study/select-study.component';
 import { LoginComponent } from './components/login/login.component';
 
 const appRoutes: Routes = [
@@ -24,7 +23,6 @@ const appRoutes: Routes = [
     AppComponent,
     MainComponent,
     StudentComponent,
-    SelectStudyComponent,
     LoginComponent
   ],
   imports: [
