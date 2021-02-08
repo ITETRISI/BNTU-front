@@ -8,6 +8,7 @@ import {
   Validators
 } from '@angular/forms';
 import { STUDY } from '../../../constants/globals'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student',
@@ -36,7 +37,7 @@ export class StudentComponent implements OnInit {
   });
 
 
-  constructor(private studyInfo: StudyInfoService, private auth: AuthService) {}
+  constructor(private studyInfo: StudyInfoService, private auth: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.getUniversity();
@@ -85,6 +86,7 @@ export class StudentComponent implements OnInit {
     if (!this.studentForm.invalid) {
       this.studentForm.value.userRole = 'student'
       await this.auth.registerUser(this.studentForm.value)
+      this.router.navigateByUrl('/student');
     }
   }
 

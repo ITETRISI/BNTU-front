@@ -1,0 +1,12 @@
+<header>
+  <span>{{user['user_first_name']}} {{user['user_second_name']}} {{user['user_middle_name']}}</span>
+</header>
+<div class="course-work">
+  <div class="course-work__row">
+    <input type="text" class="course-work__name" #coursWorkName placeholder="Название проекта" value="Сайт">
+    <div class="course-work__percent">
+      <button class="course-work__percent-btn" (click)="getPercents(coursWorkName.value)">Проверить</button>
+      <span class="course-work__percent-result">{{percents}}</span>
+    </div>
+  </div>
+</div>
