@@ -29,9 +29,13 @@ export class AuthService {
   }
 
   async checkRole(){
+    if(localStorage.getItem('token')){
     const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
     const user = await this.http.get('http://localhost:5000/user-data', {headers:token}).toPromise();
     localStorage.setItem('user', JSON.stringify(user));
-    return user['role'];
+    return {role:user['role'], confirm: user['user_confirm']};
+    } else {
+      return null
+    }
   }
 }
