@@ -1,3 +1,45 @@
 <header>
   <span>admin</span>
 </header>
+
+<table class="users">
+  <thead>
+    <tr>
+      <th>Фамилия</th>
+      <th>Имя</th>
+      <th>Отчество</th>
+      <th>Роли</th>
+      <th>Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of listOfUsers" class="users__user user">
+      <td> {{user.user_second_name}}</td>
+      <td> {{user.user_first_name}}</td>
+      <td> {{user.user_middle_name}}</td>
+      <td>
+        <div class="user__role role">
+          <button *ngFor="let role of roles" class="role__btn btn" [ngClass]="{'role__current': role.id === user.role_name}" value={{role.id}} (click)="updateRole(user.user_id,role.id)">
+            <div *ngIf="role.id === user.role_name ; then thenBlock else elseBlock"></div>
+            <ng-template #thenBlock>текущая роль {{role.name}}</ng-template>
+            <ng-template #elseBlock>{{role.name}}</ng-template>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="user__actions">
+          <button (click)="delete(user.user_id)" class="user__delete btn">Удалить</button>
+          <button *ngIf="!user.user_confirm" (click)="confirm(user.user_id)"
+            class="user__confirm btn">Подтвердить</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- user_first_name: "Даниил"
+user_id: 105
+user_login: "test"
+user_middle_name: "Ильич"
+user_password: "$2a$10$DfYVTx.skCd0uqRnsA9q6u.HgXAe.roUszrapS2.unMbXWt21hmMy"
+user_second_name: "Осипенко" -->
