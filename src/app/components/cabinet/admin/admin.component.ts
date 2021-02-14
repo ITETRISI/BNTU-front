@@ -10,7 +10,7 @@ export class AdminComponent implements OnInit {
   
   listOfUsers;
   selectedAttributes;
-  roles = [{ id: 'student', name: 'Студент' }, {id: 'secretary', name:'Секретарь'}];
+  roles = [{ id: 'student', name: 'Студент' }, {id: 'secretary', name:'Секретарь'},{id: 'lector', name:'Преподаватель из университета'}];
   
   constructor(private admin: AdminService) { }
   

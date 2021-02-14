@@ -15,12 +15,16 @@ import { RoleGuard }   from './guards/role.guard';
 import { StudentCabinetComponent } from './components/cabinet/student/student-cabinet/student-cabinet.component';
 import { AdminComponent } from './components/cabinet/admin/admin.component';
 import { SecretaryComponent } from './components/registration/secretary/secretary.component';
+import { SecretaryCabinetComponent } from './components/cabinet/secretary/secretary-cabinet/secretary-cabinet.component';
+import { LectorComponent } from './components/registration/lector/lector.component';
 
 const appRoutes: Routes = [
   {path: '', component:MainComponent},
   {path: 'registration-student', component:StudentComponent},
   {path: 'registration-secretary', component:SecretaryComponent},
+  {path: 'registration-lector', component:LectorComponent},
   {path: 'student', component:StudentCabinetComponent, canActivate: [RoleGuard]},
+  {path: 'secretary', component:SecretaryCabinetComponent, canActivate: [RoleGuard]},
   {path: 'admin', component:AdminComponent, canActivate: [RoleGuard]},
   {path: 'login', component:LoginComponent}
 ]
@@ -33,7 +37,9 @@ const appRoutes: Routes = [
     LoginComponent,
     StudentCabinetComponent,
     AdminComponent,
-    SecretaryComponent
+    SecretaryComponent,
+    SecretaryCabinetComponent,
+    LectorComponent
   ],
   imports: [
     BrowserModule,
