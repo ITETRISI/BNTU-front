@@ -14,10 +14,12 @@ import { LoginComponent } from './components/login/login.component';
 import { RoleGuard }   from './guards/role.guard';
 import { StudentCabinetComponent } from './components/cabinet/student/student-cabinet/student-cabinet.component';
 import { AdminComponent } from './components/cabinet/admin/admin.component';
+import { SecretaryComponent } from './components/registration/secretary/secretary.component';
 
 const appRoutes: Routes = [
   {path: '', component:MainComponent},
   {path: 'registration-student', component:StudentComponent},
+  {path: 'registration-secretary', component:SecretaryComponent},
   {path: 'student', component:StudentCabinetComponent, canActivate: [RoleGuard]},
   {path: 'admin', component:AdminComponent, canActivate: [RoleGuard]},
   {path: 'login', component:LoginComponent}
@@ -30,7 +32,8 @@ const appRoutes: Routes = [
     StudentComponent,
     LoginComponent,
     StudentCabinetComponent,
-    AdminComponent
+    AdminComponent,
+    SecretaryComponent
   ],
   imports: [
     BrowserModule,
