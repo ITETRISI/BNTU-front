@@ -16,12 +16,12 @@ header span {
 table {
   border-collapse:separate;
   border-spacing:0 12px;
-  border: 1px solid #ccc;
 }
 
 tr{
   padding: 5px;
   margin: 5px;
+  box-shadow: -4px 1px 5px 1px #ccc;
 }
 
 td{

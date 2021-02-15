@@ -17,6 +17,7 @@ import { AdminComponent } from './components/cabinet/admin/admin.component';
 import { SecretaryComponent } from './components/registration/secretary/secretary.component';
 import { SecretaryCabinetComponent } from './components/cabinet/secretary/secretary-cabinet/secretary-cabinet.component';
 import { LectorComponent } from './components/registration/lector/lector.component';
+import { LectorCabinetComponent } from './components/cabinet/lector/lector-cabinet/lector-cabinet.component';
 
 const appRoutes: Routes = [
   {path: '', component:MainComponent},
@@ -25,6 +26,7 @@ const appRoutes: Routes = [
   {path: 'registration-lector', component:LectorComponent},
   {path: 'student', component:StudentCabinetComponent, canActivate: [RoleGuard]},
   {path: 'secretary', component:SecretaryCabinetComponent, canActivate: [RoleGuard]},
+  {path: 'lector', component:LectorCabinetComponent, canActivate: [RoleGuard]},
   {path: 'admin', component:AdminComponent, canActivate: [RoleGuard]},
   {path: 'login', component:LoginComponent}
 ]
@@ -39,7 +41,8 @@ const appRoutes: Routes = [
     AdminComponent,
     SecretaryComponent,
     SecretaryCabinetComponent,
-    LectorComponent
+    LectorComponent,
+    LectorCabinetComponent
   ],
   imports: [
     BrowserModule,
