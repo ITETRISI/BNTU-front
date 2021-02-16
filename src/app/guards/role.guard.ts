@@ -11,7 +11,6 @@ export class RoleGuard implements CanActivate{
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Promise<boolean>{
       const USER= await this.auth.checkRole()
       if(USER && USER.role === state.url.slice(1) && USER.confirm === true){
-        console.log('work')
         return true;
       } else if(USER && USER.confirm === false){
         alert('Ожидайте подтверждения вашего аккаунта администратором')
