@@ -1,12 +1,82 @@
 <header>
   <span>{{user['user_first_name']}} {{user['user_second_name']}} {{user['user_middle_name']}}</span>
 </header>
-<div class="course-work">
-  <div class="course-work__row">
-    <input type="text" class="course-work__name" #coursWorkName placeholder="Название проекта" value="Сайт">
-    <div class="course-work__percent">
-      <button class="course-work__percent-btn" (click)="getPercents(coursWorkName.value)">Проверить</button>
-      <span class="course-work__percent-result">{{percents}}</span>
-    </div>
+
+<ng-template #content let-modal class="modal-xl">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Регистрация дипломной работы</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
   </div>
-</div>
+  <div class="modal-body">
+    <form [formGroup]="studentForm">
+      <div class="form-group form__group">
+        <div class="form__group-field">
+          <label for="login">Название</label>
+          <input type="text" #coursWorkName autocomplete="off" placeholder="Название проекта" name="name"
+            formControlName="studentWorkName">
+          <div class="alert" *ngIf="studentWorkName.touched && !studentWorkName.valid">
+            <span *ngIf="studentWorkName.errors.required" class="alert__error">
+              Введите данные
+            </span>
+          </div>
+
+        </div>
+
+
+        <div class="form__group-field">
+          <label for="checkBtn">Проверка на плагиат</label>
+          <button class="course-work__percent-btn" id="checkBtn"
+            (click)="getPercents(coursWorkName.value)">Проверить</button>
+          <div class="alert" *ngIf="percents">
+            <span class="course-work__percent-result"
+              [ngClass]="{'alert__error': percents > 50, 'alert__success': percents <= 50}">{{percents}} %</span>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="form-group form__group">
+        <div class="form__group-field">
+          <label for="university">Руководитель проекта</label>
+          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
+            name="lectors" [searchable]="false" bindValue="user_id" placeholder="Руководитель проекта"></ng-select>
+        </div>
+
+        <!-- <div class="form__group-field">
+          <label for="university">Рецензент</label>
+          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
+            name="lectors" [searchable]="false" bindValue="user_id" placeholder="Рецензент"></ng-select>
+        </div> -->
+
+        <!-- <div class="form__group-field">
+          <label for="university">Научный руководитель</label>
+          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
+            name="lectors" [searchable]="false" bindValue="user_id" placeholder="Научный руководитель"></ng-select>
+        </div>
+        <div class="form__group-field">
+          <label for="university">Руководитель по организационно-технической части</label>
+          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
+            name="lectors" [searchable]="false" bindValue="user_id"
+            placeholder="Руководитель по организационно-технической части"></ng-select>
+        </div>
+
+        <div class="form__group-field">
+          <label for="university">Руководитель по организационно-экономическому обоснованию</label>
+          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
+            name="lectors" [searchable]="false" bindValue="user_id"
+            placeholder="Руководитель по организационно-экономическому обоснованию"></ng-select>
+        </div> -->
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content); getUsers('lector')">Регистрация дипломной
+  работы</button>
+
+<hr>
