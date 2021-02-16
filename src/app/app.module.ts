@@ -18,6 +18,7 @@ import { SecretaryComponent } from './components/registration/secretary/secretar
 import { SecretaryCabinetComponent } from './components/cabinet/secretary/secretary-cabinet/secretary-cabinet.component';
 import { LectorComponent } from './components/registration/lector/lector.component';
 import { LectorCabinetComponent } from './components/cabinet/lector/lector-cabinet/lector-cabinet.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const appRoutes: Routes = [
   {path: '', component:MainComponent},
@@ -51,7 +52,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    NgbModule
   ],
   providers: [RoleGuard],
   bootstrap: [AppComponent]
