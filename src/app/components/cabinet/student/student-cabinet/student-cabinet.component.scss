@@ -161,3 +161,27 @@ label {
 .ng-select{
   width:250px;
 }
+
+
+.header__name{
+  font-size: 30px;
+  color: rgb(56, 56, 56);
+}
+
+.body {
+  padding: 15px;
+}
+h3 {
+  margin-top: 20px;
+}
+
+.card__body{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.btn {
+  margin-bottom: 10px;
+}

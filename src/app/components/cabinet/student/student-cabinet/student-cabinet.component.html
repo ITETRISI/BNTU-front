@@ -1,6 +1,86 @@
-<header>
-  <span>{{user['user_first_name']}} {{user['user_second_name']}} {{user['user_middle_name']}}</span>
+<header class="header">
+  <span class="header__name">{{user['user_first_name']}} {{user['user_second_name']}}
+    {{user['user_middle_name']}}</span>
 </header>
+
+<div class="body">
+
+  <div *ngIf='diplomWork'>
+    <div *ngIf="!diplomWork ; then thenBlock else elseBlock"></div>
+    <ng-template #thenBlock>
+      <div class="card-body">sdfsdfsdf
+        <button class="btn btn-lg btn-outline-primary" (click)="open(content,'insert'); getUsers('lector')">Добавить дипломную
+          работу</button>
+      </div>
+    </ng-template>
+    <ng-template #elseBlock>
+      <h3>Дипломная работа</h3>
+      <button type="button" class="btn btn-primary"  (click)="open(content,'update'); getUsers('lector')">Редактировать</button>
+      <div class="card">
+        <div class="card-body">
+          <p><strong>Название: </strong><span>{{diplomWork[0].name}}</span></p>
+          <p><strong>Оценка: </strong><span
+              *ngIf='diplomWork[0].mark == 0; then noMarkBlock else currentMarkBlock'></span>
+            <ng-template #noMarkBlock>
+              Нет оценки
+            </ng-template>
+            <ng-template #currentMarkBlock>
+              {{diplomWork[0].mark}}
+            </ng-template>
+
+
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+
+  <h3>ГЭК</h3>
+  <div class="card">
+    <div class="card-body">
+      <p><strong>ГЭК: </strong><span>Не назначена</span></p>
+    </div>
+  </div>
+
+  <div class="card">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Название</th>
+      <th scope="col">Дата начала</th>
+      <th scope="col">Дата окончания</th>
+      <th scope="col">Планируемый процент</th>
+      <th scope="col">Фактический процен</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>
+        ГЭК
+      </td>
+      <td>01.01.2021</td>
+      <td>01.01.2021</td>
+      <td>5</td>
+      <td>10</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Руководители и консультанты</h3>
+<div class="card">
+  <div class="card-body">
+    <p><strong>Руководитель проекта: </strong><span>{{diplomWork[0].lector.user_second_name}} {{diplomWork[0].lector.user_first_name}} {{diplomWork[0].lector.user_middle_name}}</span></p>
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+
 
 <ng-template #content let-modal class="modal-xl">
   <div class="modal-header">
@@ -10,7 +90,8 @@
     </button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="studentForm">
+
+    <form [formGroup]="diplomaForm">
       <div class="form-group form__group">
         <div class="form__group-field">
           <label for="login">Название</label>
@@ -23,7 +104,6 @@
           </div>
 
         </div>
-
 
         <div class="form__group-field">
           <label for="checkBtn">Проверка на плагиат</label>
@@ -38,45 +118,17 @@
       </div>
 
       <div class="form-group form__group">
+
         <div class="form__group-field">
-          <label for="university">Руководитель проекта</label>
+          <label>Руководитель проекта</label>
           <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
             name="lectors" [searchable]="false" bindValue="user_id" placeholder="Руководитель проекта"></ng-select>
         </div>
-
-        <!-- <div class="form__group-field">
-          <label for="university">Рецензент</label>
-          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
-            name="lectors" [searchable]="false" bindValue="user_id" placeholder="Рецензент"></ng-select>
-        </div> -->
-
-        <!-- <div class="form__group-field">
-          <label for="university">Научный руководитель</label>
-          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
-            name="lectors" [searchable]="false" bindValue="user_id" placeholder="Научный руководитель"></ng-select>
-        </div>
-        <div class="form__group-field">
-          <label for="university">Руководитель по организационно-технической части</label>
-          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
-            name="lectors" [searchable]="false" bindValue="user_id"
-            placeholder="Руководитель по организационно-технической части"></ng-select>
-        </div>
-
-        <div class="form__group-field">
-          <label for="university">Руководитель по организационно-экономическому обоснованию</label>
-          <ng-select formControlName="studentWorkLector" [clearable]="false" [items]="lectors" bindLabel="fullName"
-            name="lectors" [searchable]="false" bindValue="user_id"
-            placeholder="Руководитель по организационно-экономическому обоснованию"></ng-select>
-        </div> -->
       </div>
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    <button type="button" class="btn btn-outline-dark"
+      (click)="modal.close(); submitDiplomaForm()">Сохранить</button>
   </div>
 </ng-template>
-
-<button class="btn btn-lg btn-outline-primary" (click)="open(content); getUsers('lector')">Регистрация дипломной
-  работы</button>
-
-<hr>

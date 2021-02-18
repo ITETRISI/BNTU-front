@@ -19,22 +19,30 @@ import { NgOption } from '@ng-select/ng-select';
 
 export class StudentCabinetComponent implements OnInit {
   lectors: NgOption[] | any = [];
+  user = JSON.parse(localStorage.getItem('user'));
+  percents: any;
+  diplomWork: any;
+  formParams: any;
 
-  studentForm: FormGroup = new FormGroup({
+  diplomaForm: FormGroup = new FormGroup({
     "studentWorkName": new FormControl("", Validators.required),
     "studentWorkLector": new FormControl(null, Validators.required),
   });
 
-  get studentWorkName() {
-    return this.studentForm.get('studentWorkName')
-  }
-
   constructor(private fuzzy: FuzzysetService, private modalService: NgbModal, private usersInfo: UsersInfoService) { }
 
-  user = JSON.parse(localStorage.getItem('user'));
-  percents: any;
+  async ngOnInit(){
+    this.diplomWork = await this.usersInfo.getDiplomaWork(this.user.user_id);
+    console.log(this.diplomWork)
+  }
 
-  ngOnInit(): void {}
+  get studentWorkName() {
+    return this.diplomaForm.get('studentWorkName')
+  }
+
+  get studentWorkLector() {
+    return this.diplomaForm.get('studentWorkLector')
+  }
 
   async getUsers(role){
     if(role === 'lector'){
@@ -44,23 +52,33 @@ export class StudentCabinetComponent implements OnInit {
   }
 
   getPercents(name){
-    if(this.studentForm.get('studentWorkName').value){
+    if(this.diplomaForm.get('studentWorkName').value){
       this.fuzzy.getCourseWorks(name).then(data => this.percents = `${(data[0][0] * 100).toFixed(2)}`);
-      // this.fuzzy.getCourseWorks(name).then(data => this.percents = `${(data[0][0] * 100).toFixed(2)} % "${data[0][1]}"`);
     } else {
-      this.studentForm.get('studentWorkName').markAsTouched()
+      this.diplomaForm.get('studentWorkName').markAsTouched()
     }
    
   }
 
-  open(content) {
+  open(content, params) {
     this.modalService.open(content, {size: 'lg' });
+    this.formParams = params;
+    console.log(params)
+    if(params === 'update'){
+      this.diplomaForm.controls['studentWorkName'].setValue(this.diplomWork[0].name);
+      this.diplomaForm.controls['studentWorkLector'].setValue(parseInt(this.diplomWork[0].id_leader))
+    }
   }
 
-  // async submitDiplomaForm() {
-  //   if (!this.diplomaForm.invalid) {
-  //     console.log('work')
-  //   }
-  // }
+  async submitDiplomaForm(){
+    if(this.formParams == 'update'){
+      this.diplomaForm.value.userId = this.user.user_id
+      this.usersInfo.updateDiplomaWork(this.diplomaForm.value)
+      console.log(this.diplomaForm.value)
+    } else if (this.formParams == 'insert'){
+      this.diplomaForm.value.userId = this.user.user_id
+      this.usersInfo.postDiplomaWork(this.diplomaForm.value)
+    }
+  }
 
 }
