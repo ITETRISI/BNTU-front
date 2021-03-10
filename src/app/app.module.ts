@@ -19,6 +19,7 @@ import { SecretaryCabinetComponent } from './components/cabinet/secretary/secret
 import { LectorComponent } from './components/registration/lector/lector.component';
 import { LectorCabinetComponent } from './components/cabinet/lector/lector-cabinet/lector-cabinet.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HeadOfDepartmentComponent } from './components/cabinet/headOfDepartment/head-of-department/head-of-department.component';
 
 const appRoutes: Routes = [
   {path: '', component:MainComponent},
@@ -26,6 +27,7 @@ const appRoutes: Routes = [
   {path: 'registration-secretary', component:SecretaryComponent},
   {path: 'registration-lector', component:LectorComponent},
   {path: 'student', component:StudentCabinetComponent, canActivate: [RoleGuard]},
+  {path: 'head-of-department', component:HeadOfDepartmentComponent, canActivate: [RoleGuard]},
   {path: 'secretary', component:SecretaryCabinetComponent, canActivate: [RoleGuard]},
   {path: 'lector', component:LectorCabinetComponent, canActivate: [RoleGuard]},
   {path: 'admin', component:AdminComponent, canActivate: [RoleGuard]},
@@ -43,7 +45,8 @@ const appRoutes: Routes = [
     SecretaryComponent,
     SecretaryCabinetComponent,
     LectorComponent,
-    LectorCabinetComponent
+    LectorCabinetComponent,
+    HeadOfDepartmentComponent
   ],
   imports: [
     BrowserModule,
