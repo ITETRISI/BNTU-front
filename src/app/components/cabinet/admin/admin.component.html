@@ -2,57 +2,113 @@
   <span>admin</span>
 </header>
 
-<table class="users table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">Фамилия</th>
-      <th scope="col">Имя</th>
-      <th scope="col">Отчество</th>
-      <th scope="col">Роли</th>
-      <th scope="col">Действия</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of listOfUsers" class="users__user user">
-      <td> {{user.user_second_name}}</td>
-      <td> {{user.user_first_name}}</td>
-      <td> {{user.user_middle_name}}</td>
-      <td>
-        <div class="user__role role">
-          <button *ngFor="let role of roles" class="role__btn btn" [ngClass]="{'role__current': role.id === user.role_name}" value={{role.id}} (click)="updateRole(user.user_id,role.id)">
-            <div *ngIf="role.id === user.role_name ; then thenBlock else elseBlock"></div>
-            <ng-template #thenBlock>текущая роль {{role.name}}</ng-template>
-            <ng-template #elseBlock>{{role.name}}</ng-template>
-          </button>
-        </div>
-      </td>
-      <td>
-        <div class="user__actions">
-          <button (click)="delete(user.user_id)" class="user__delete btn">Удалить</button>
-          <button *ngIf="!user.user_confirm" (click)="confirm(user.user_id)"
-            class="user__confirm btn">Подтвердить</button>
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div class="row">
-  <div class="col">
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Toggle dropdown</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem>Action - 1</button>
-        <button ngbDropdownItem>Another Action</button>
-        <button ngbDropdownItem>Something else is here</button>
-      </div>
-    </div>
-  </div>
-  </div>
 
 
-<!-- user_first_name: "Даниил"
-user_id: 105
-user_login: "test"
-user_middle_name: "Ильич"
-user_password: "$2a$10$DfYVTx.skCd0uqRnsA9q6u.HgXAe.roUszrapS2.unMbXWt21hmMy"
-user_second_name: "Осипенко" -->
+
+<ul ngbNav #nav="ngbNav" class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink>Пользователи</a>
+    <ng-template ngbNavContent>
+      <table class="users table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Фамилия</th>
+            <th scope="col">Имя</th>
+            <th scope="col">Отчество</th>
+            <th scope="col">Роли</th>
+            <th scope="col">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of listOfUsers" class="users__user user">
+            <td> {{user.user_second_name}}</td>
+            <td> {{user.user_first_name}}</td>
+            <td> {{user.user_middle_name}}</td>
+            <td>
+              <div class="user__role role">
+                <button *ngFor="let role of roles" class="role__btn button"
+                  [ngClass]="{'role__current': role.id === user.role_name}" value={{role.id}}
+                  (click)="updateRole(user.user_id,role.id)">
+                  <div *ngIf="role.id === user.role_name ; then thenBlock else elseBlock"></div>
+                  <ng-template #thenBlock>текущая роль {{role.name}}</ng-template>
+                  <ng-template #elseBlock>{{role.name}}</ng-template>
+                </button>
+              </div>
+            </td>
+            <td>
+              <div class="user__actions">
+                <button (click)="delete(user.user_id)" class="user__delete button">Удалить</button>
+                <button *ngIf="!user.user_confirm" (click)="confirm(user.user_id)"
+                  class="user__confirm btn">Подтвердить</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink>Учебные года</a>
+    <ng-template ngbNavContent>
+      <table class="users table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">№</th>
+            <th scope="col">Начало года</th>
+            <th scope="col">Конец года</th>
+            <th scope="col">Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let date of dates; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{date.year_start}}</td>
+            <td>{{date.year_end}}</td>
+            <td>
+              <div class="user__role role">
+                <button class="user__delete button" (click)="deleteDate(date.year_id)">Удалить</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Добавить учебный год</button>
+
+
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>
+
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <ngb-datepicker #dp (dateSelect)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+      outsideDays="hidden">
+    </ngb-datepicker>
+
+    <ng-template #t let-date let-focused="focused">
+      <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+        [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+        (mouseleave)="hoveredDate = null">
+        {{ date.day }}
+      </span>
+    </ng-template>
+
+    <pre>From: {{ fromDate | json }} </pre>
+    <pre>To: {{ toDate | json }} </pre>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close(); submitDate()">Сохранить</button>
+  </div>
+</ng-template>
