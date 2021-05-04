@@ -21,7 +21,7 @@ export class StudentCabinetComponent implements OnInit {
   lectors: NgOption[] | any = [];
   user = JSON.parse(localStorage.getItem('user'));
   percents: any;
-  diplomWork: any;
+  diplomWork: any = [];
   formParams: any;
 
   diplomaForm: FormGroup = new FormGroup({
@@ -32,7 +32,17 @@ export class StudentCabinetComponent implements OnInit {
   constructor(private fuzzy: FuzzysetService, private modalService: NgbModal, private usersInfo: UsersInfoService) { }
 
   async ngOnInit(){
+    this.getDiplomaWork()
+  }
+
+  async getDiplomaWork(){
     this.diplomWork = await this.usersInfo.getDiplomaWork(this.user.user_id);
+    if(!this.diplomWork.length){
+      console.log('work')
+      this.diplomWork = []
+    }
+    console.log(this.user.user_id)
+   
     console.log(this.diplomWork)
   }
 
@@ -79,6 +89,7 @@ export class StudentCabinetComponent implements OnInit {
       this.diplomaForm.value.userId = this.user.user_id
       this.usersInfo.postDiplomaWork(this.diplomaForm.value)
     }
+    this.getDiplomaWork()
   }
 
 }
