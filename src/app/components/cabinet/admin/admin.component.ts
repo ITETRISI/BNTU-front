@@ -9,7 +9,7 @@ import {NgbDate, NgbCalendar, NgbDateParserFormatter,NgbModal, NgbDateStruct} fr
 export class AdminComponent implements OnInit {
 
   hoveredDate: NgbDate | null = null;
-
+  userName = JSON.parse(localStorage.getItem('user'));
   fromDate: NgbDate | null;
   toDate: NgbDate | null;
 

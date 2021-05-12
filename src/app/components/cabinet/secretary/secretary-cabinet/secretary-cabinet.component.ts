@@ -15,6 +15,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./secretary-cabinet.component.scss']
 })
 export class SecretaryCabinetComponent implements OnInit {
+  userName = JSON.parse(localStorage.getItem('user'));
   active = 1;
   sec: any = [];
   years: any = [];
@@ -206,7 +207,8 @@ export class SecretaryCabinetComponent implements OnInit {
   }
 
   async addPercent(name,percentPlane,comment){
-    await this.secretary.putSecPercent(name,percentPlane,comment, Object.values(this.fromDate).join('-'),Object.values(this.toDate).join('-'), this.secId, this.secGroup.group_id);
+    console.log(this.selectedStudents)
+    await this.secretary.putSecPercent(name,percentPlane,comment, Object.values(this.fromDate).join('-'),Object.values(this.toDate).join('-'), this.secId, this.secGroup.group_id,this.selectedStudents);
     await this.getSecPercent()
   }
 
@@ -227,7 +229,7 @@ export class SecretaryCabinetComponent implements OnInit {
 
   async savePercent(name,percentPlane,comment){
     console.log(name,percentPlane,comment)
-    await this.secretary.saveSecPercent(name,percentPlane,comment, Object.values(this.fromDate).join('-'),Object.values(this.toDate).join('-'), this.percent.id_percentage);
+    await this.secretary.saveSecPercent(name,percentPlane,comment, Object.values(this.fromDate).join('-'),Object.values(this.toDate).join('-'), this.percent.id_percentage,this.selectedStudents);
     await this.getSecPercent()
   }
 
@@ -237,7 +239,7 @@ export class SecretaryCabinetComponent implements OnInit {
     console.log('Start',this.timeStart, this.timeEnd)
     const startTime = `${this.timeStart.hour}:${this.timeStart.minute}`;
     const endTime = `${this.timeEnd.hour}:${this.timeEnd.minute}`
-    await this.secretary.putSecEvent(address,this.selectedGroup.group_name, Object.values(this.model).join('-'),`${startTime} / ${endTime}`, this.secId);
+    await this.secretary.putSecEvent(address,this.selectedGroup.group_name, Object.values(this.model).join('-'),`${startTime} / ${endTime}`, this.secId, this.selectedStudents);
     await this.getSecEvent()
   }
 
@@ -253,7 +255,8 @@ export class SecretaryCabinetComponent implements OnInit {
   }
 
   editEvent(id){
-    this.event = this.secEvent.find(element => element.id_sec_event === id)
+    console.log(this.secEvent)
+    this.event = {...this.secEvent.find(element => element.id_sec_event === id)}
     const address =  this.event.address.split(',') 
     this.event.address = address[0];
     this.event.corpus = address[1].slice(10);
@@ -263,7 +266,7 @@ export class SecretaryCabinetComponent implements OnInit {
   async saveEvent(address, address1, address2){
     console.log(this.event)
     address += `, Корпус - ${address1}, Факультет - ${address2} `
-    await this.secretary.editSecEvent(address,this.selectedGroup.group_name, Object.values(this.model).join('-'),`${Object.values(this.timeStart).join('-')} / ${Object.values(this.timeEnd).join('-')}`, this.event.id_sec_event);
+    await this.secretary.editSecEvent(address,this.selectedGroup.group_name, Object.values(this.model).join('-'),`${Object.values(this.timeStart).join('-')} / ${Object.values(this.timeEnd).join('-')}`, this.event.id_sec_event, this.selectedStudents);
     await this.getSecEvent()
   }
 
@@ -292,7 +295,6 @@ export class SecretaryCabinetComponent implements OnInit {
   }
 
   async saveSecUser(firstName, lastName, middleName){
-    console.log(this.user.id_sec_user)
     await this.secretary.saveSecUser(firstName, lastName, middleName, this.selectedSecRoles.id_sec_role , this.user.id_sec_user);
     await this.getSecUsers()
   }
@@ -301,15 +303,17 @@ export class SecretaryCabinetComponent implements OnInit {
 
   async getStudents(){
     this.students = []
-    for(let group of this.secGroup){
+    console.log(this.secGroup)
+    for await(let group of this.secGroup){
       const result = await this.secretary.getStudents(group.group_id);
       this.students.push(result)
     }
    
     this.students = this.students.flat()
     this.students.sort((a,b) => a.user_id - b.user_id)
-    console.log(this.students)
   }
+
+  selectedStudents: number;
 
   isPercentEditMode = false
   percentEditModeUser = {}
@@ -329,15 +333,24 @@ export class SecretaryCabinetComponent implements OnInit {
     console.log(this.studentPercentValue)
     this.students = await this.secretary.updateStudentPercentMark(this.studentPercentValue, this.percentEditModeUser);
     this.studentPercentValue = null
-    this.getStudents()
+    this.getStudentsByPercentId(this.percent.id_percentage)
   }
 
   async editStudentEvent(){
     this.students = await this.secretary.updateStudentEventMark(this.studentPercentValue, this.percentEditModeUser);
     this.studentPercentValue = null
-    this.getStudents()
+    console.log(this.event)
+    this.getStudentsByEventId(this.event.id_sec_event)
   }
 
+  async getStudentsByPercentId(id){
+    this.students = await this.secretary.getStudentsPercent(id);
+  }
+
+  async getStudentsByEventId(id){
+    this.event = {id_sec_event: id}
+    this.students = await this.secretary.getStudentsEvent(id);
+  }
 
 
 }

@@ -7,7 +7,8 @@ import {AdminService} from '../../../../services/admin/admin.service'
   styleUrls: ['./head-of-department.component.scss']
 })
 export class HeadOfDepartmentComponent implements OnInit {
-
+  
+  userName = JSON.parse(localStorage.getItem('user'));
   active = 1;
   listOfUsers;
   listOfStudents;

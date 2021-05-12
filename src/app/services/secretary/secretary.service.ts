@@ -151,8 +151,8 @@ export class SecretaryService {
     }).toPromise();
   }
 
-  async putSecPercent(name,percentPlane,comment, fromDate, toDate, secId, group_id){
-    const body = {name,percentPlane,comment, fromDate, toDate, secId,group_id};
+  async putSecPercent(name,percentPlane,comment, fromDate, toDate, secId, group_id, students){
+    const body = {name,percentPlane,comment, fromDate, toDate, secId,group_id, students};
     const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
     await this.http.post('http://localhost:5000/sec-percent',body, {
       headers: token
@@ -174,8 +174,8 @@ export class SecretaryService {
     }).toPromise();
   }
 
-  async saveSecPercent(name,percentPlane,comment, fromDate, toDate, percentId){
-    const body = {name,percentPlane,comment, fromDate, toDate, percentId};
+  async saveSecPercent(name,percentPlane,comment, fromDate, toDate, percentId,students){
+    const body = {name,percentPlane,comment, fromDate, toDate, percentId,students};
     const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
     await this.http.put('http://localhost:5000/sec-percent',body, {
       headers: token
@@ -183,8 +183,8 @@ export class SecretaryService {
   }
 
   
-  async putSecEvent(address,selectedGroup,model,time, secId){
-    const body = {address,selectedGroup,model,time, secId};
+  async putSecEvent(address,selectedGroup,model,time, secId, students){
+    const body = {address,selectedGroup,model,time, secId,students};
     const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
     await this.http.post('http://localhost:5000/sec-event',body, {
       headers: token
@@ -206,8 +206,8 @@ export class SecretaryService {
     }).toPromise();
   }
 
-  async editSecEvent(address,selectedGroup,model,time, eventId){
-    const body = {address,selectedGroup,model,time, eventId};
+  async editSecEvent(address,selectedGroup,model,time, eventId, students){
+    const body = {address,selectedGroup,model,time, eventId,students};
     const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
     await this.http.put('http://localhost:5000/sec-event',body, {
       headers: token
@@ -278,5 +278,20 @@ export class SecretaryService {
     }).toPromise();
   }
 
-
+  async getStudentsPercent(id){
+    const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
+    const data = await this.http.get(`http://localhost:5000/sec-students-percent/${id}`, {
+      headers: token
+    }).toPromise();
+    return data
+  }
+  
+  async getStudentsEvent(id){
+    console.log(id)
+    const token = new HttpHeaders().set('auth-token', localStorage.getItem('token'));
+    const data = await this.http.get(`http://localhost:5000/sec-students-event/${id}`, {
+      headers: token
+    }).toPromise();
+    return data
+  }
 }
