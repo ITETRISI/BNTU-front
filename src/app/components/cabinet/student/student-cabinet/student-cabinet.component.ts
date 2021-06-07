@@ -61,9 +61,12 @@ export class StudentCabinetComponent implements OnInit {
     }
   }
 
+  result:string = '';
   getPercents(name){
     if(this.diplomaForm.get('studentWorkName').value){
-      this.fuzzy.getCourseWorks(name).then(data => this.percents = `${(data[0][0] * 100).toFixed(2)}`);
+      this.fuzzy.getCourseWorks(name).then(data => {this.percents = `${(data[0][0] * 100).toFixed(2)}`
+      this.result = data[0][1];
+    });
     } else {
       this.diplomaForm.get('studentWorkName').markAsTouched()
     }

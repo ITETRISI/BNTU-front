@@ -135,20 +135,23 @@ export class SecretaryCabinetComponent implements OnInit {
 
   async putCathedra(id){
     await this.secretary.putSecCathedra(id, this.secId);
+    for(let spec of this.secSpecialty){
+      this.deleteSecSpecialty(spec.specialty_id)
+    }
     this.getSecCathedra()
   }
 
   async getSecCathedra(){
     this.secCathedra = await this.secretary.getSecCathedra(this.secId);
-    for(let spec of this.secSpecialty){
-      this.deleteSecSpecialty(spec.specialty_id)
-    }
     this.getSpecialty()
   }
 
   async deleteSecCathedra(){
     await this.secretary.deleteSecCathedra(this.secId);
     this.secCathedra = null;
+    for(let spec of this.secSpecialty){
+      this.deleteSecSpecialty(spec.specialty_id)
+    }
     this.getSecCathedra();
   }
 
@@ -208,7 +211,7 @@ export class SecretaryCabinetComponent implements OnInit {
 
   async addPercent(name,percentPlane,comment){
     console.log(this.selectedStudents)
-    await this.secretary.putSecPercent(name,percentPlane,comment, Object.values(this.fromDate).join('-'),Object.values(this.toDate).join('-'), this.secId, this.secGroup.group_id,this.selectedStudents);
+    await this.secretary.putSecPercent(name,percentPlane,comment, Object.values(this.model).join('-'),Object.values(this.toDate).join('-'), this.secId, this.secGroup.group_id,this.selectedStudents);
     await this.getSecPercent()
   }
 
@@ -229,7 +232,7 @@ export class SecretaryCabinetComponent implements OnInit {
 
   async savePercent(name,percentPlane,comment){
     console.log(name,percentPlane,comment)
-    await this.secretary.saveSecPercent(name,percentPlane,comment, Object.values(this.fromDate).join('-'),Object.values(this.toDate).join('-'), this.percent.id_percentage,this.selectedStudents);
+    await this.secretary.saveSecPercent(name,percentPlane,comment, Object.values(this.model).join('-'),Object.values(this.toDate).join('-'), this.percent.id_percentage,this.selectedStudents);
     await this.getSecPercent()
   }
 
